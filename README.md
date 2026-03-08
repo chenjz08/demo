@@ -62,6 +62,12 @@ npm run mcp:index2
 
 ### 功能描述
 
+该项目支持两种运行模式：
+
+- **普通开发模式** (npm run dev) - 常规开发环境，使用固定代理配置
+- **代理切换模式** (npm run dev:proxy) - 高级开发环境，支持动态切换
+
+#### 代理切换模式特性：
 - **环境切换UI组件** - 页面顶部固定的环境选择器
 - **动态代理切换** - 运行时无缝切换不同后端服务
 - **自定义URL支持** - 支持输入自定义后端地址
@@ -83,6 +89,9 @@ npm install
 # 同时启动所有服务（前端+两个后端）
 npm run dev
 
+# 启动所有服务并启用代理切换功能
+npm run dev:proxy
+
 # 仅启动后端服务
 npm run dev:servers
 
@@ -98,6 +107,12 @@ npm run dev:frontend
 
 ### 功能测试
 
+#### 普通模式 (npm run dev)
+1. 打开 http://localhost:5173
+2. 使用默认代理配置 (server1)
+3. 点击"获取用户信息"按钮测试API
+
+#### 代理切换模式 (npm run dev:proxy)
 1. 打开 http://localhost:5173
 2. 页面顶部会显示蓝色的环境切换器
 3. 可以切换"server1"、"server2"或"自定义"

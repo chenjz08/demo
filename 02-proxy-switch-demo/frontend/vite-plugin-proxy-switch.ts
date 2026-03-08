@@ -101,7 +101,6 @@ const handleCustomUrlChange = async () => {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
   background: #409eff;
   padding: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
@@ -140,6 +139,9 @@ function applyTarget(server: any, target: string) {
 // 创建proxy-switch插件
 export function proxySwitchPlugin(): Plugin {
   let server: any
+  
+  // 检查是否启用代理切换
+  const enableProxySwitch = process.env.VITE_ENABLE_PROXY_SWITCH === 'true'
 
   return {
     name: 'vite-plugin-proxy-switch',
@@ -147,14 +149,17 @@ export function proxySwitchPlugin(): Plugin {
     enforce: 'pre',
 
     resolveId(id) {
-      if (id === VIRTUAL_ID) return RESOLVED_ID
+      if (id === VIRTUAL_ID && enableProxySwitch) return RESOLVED_ID
     },
 
     load(id) {
-      if (id === RESOLVED_ID) return getEnvSwitchSFC()
+      if (id === RESOLVED_ID && enableProxySwitch) return getEnvSwitchSFC()
     },
 
     transform(code, id) {
+      // 如果未启用代理切换，则不进行任何转换
+      if (!enableProxySwitch) return
+      
       // 过滤掉子块请求（?vue&type=...）和非 App.vue 文件
       if (!id.includes('App.vue') || id.includes('?')) return
 
@@ -179,6 +184,9 @@ export function proxySwitchPlugin(): Plugin {
 
     configureServer(viteServer) {
       server = viteServer
+      
+      // 如果未启用代理切换，则不配置中间件
+      if (!enableProxySwitch) return
 
       server.middlewares.use('/__current_env', (req: any, res: any) => {
         const proxy = server.config.server?.proxy as Record<string, any>

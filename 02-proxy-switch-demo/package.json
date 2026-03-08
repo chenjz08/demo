@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "Proxy Switch Vite插件演示项目",
   "scripts": {
+    "dev": "concurrently \"npm run start:server1\" \"npm run start:server2\" \"npm run start:frontend\"",
+    "dev:proxy": "concurrently \"npm run start:server1\" \"npm run start:server2\" \"npm run start:frontend:proxy\"",
     "start:server1": "cd server1 && npm start",
     "start:server2": "cd server2 && npm start",
     "start:frontend": "cd frontend && npm run dev",
-    "dev": "concurrently \"npm run start:server1\" \"npm run start:server2\" \"npm run start:frontend\"",
+    "start:frontend:proxy": "cd frontend && npm run dev:proxy",
     "dev:servers": "concurrently \"npm run start:server1\" \"npm run start:server2\"",
     "dev:frontend": "npm run start:frontend"
   },
