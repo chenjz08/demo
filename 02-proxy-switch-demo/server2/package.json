@@ -1,0 +1,13 @@
+{
+  "name": "server2",
+  "version": "1.0.0",
+  "description": "第二个演示后端服务器",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
