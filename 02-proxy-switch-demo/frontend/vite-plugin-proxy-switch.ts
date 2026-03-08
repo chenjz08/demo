@@ -41,7 +41,7 @@ const currentEnv = ref('server1')
 const selectedEnv = ref('server1')
 const customUrl = ref('')
 
-onMounted(() => {
+onMounted(async () => {
   const saved = localStorage.getItem('proxy-env')
   if (saved) {
     const parsed = JSON.parse(saved)
@@ -50,8 +50,29 @@ onMounted(() => {
     if (parsed.env === 'custom') {
       customUrl.value = parsed.url || ''
     }
+    // 每次启动时将保存的 env 同步到 Vite 代理（server 重启后代理会重置）
+    await initEnv(parsed)
   }
 })
+
+const initEnv = async (parsed: { env: string; url?: string }) => {
+  try {
+    const body = parsed.env === 'custom'
+      ? { env: 'custom', customUrl: parsed.url }
+      : { env: parsed.env }
+    const response = await fetch('/__switch_env', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    if (response.ok) {
+      const result = await response.json()
+      currentEnv.value = result.env
+    }
+  } catch (error) {
+    console.error('初始化环境出错:', error)
+  }
+}
 
 const handleEnvChange = async () => {
   const env = selectedEnv.value
