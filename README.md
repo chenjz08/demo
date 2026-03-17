@@ -15,7 +15,7 @@ demo/
 
 这是一个完整的全栈演示项目，展示如何创建一个Vite插件来实现运行时动态代理切换功能，特别适用于前端开发中需要在不同后端环境之间切换的场景。
 
-[02-proxy-switch-demo](./proxy_switch_vite_plugin.gif)
+![02-proxy-switch-demo](./proxy_switch_vite_plugin.gif)
 
 ### 功能描述
 
